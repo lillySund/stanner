@@ -1,0 +1,33 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Stanner</h1>
+    <p></p>
+    
+    <div class="mt-4">
+        <p class="lead">Redirecting you to Stanner in <span id="countdown">3</span> seconds...</p>
+        <a asp-page="/Portal" class="btn btn-primary btn-lg">Redirect me now! :P</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // countdown for redirecting to the portal page
+        let seconds = 3;
+        const countdownElement = document.getElementById('countdown');
+        
+        const countdownInterval = setInterval(function() {
+            seconds--;
+            countdownElement.textContent = seconds;
+            
+            if (seconds <= 0) {
+                clearInterval(countdownInterval);
+                window.location.href = '@Url.Page("/Portal")';
+            }
+        }, 1000);
+    </script>
+}
