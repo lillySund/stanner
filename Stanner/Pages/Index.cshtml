@@ -6,18 +6,18 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome to Stanner</h1>
-    <p></p>
+    <p>Personalised study planner with flashcards, study tracking and note taking.</p>
     
     <div class="mt-4">
-        <p class="lead">Redirecting you to Stanner in <span id="countdown">3</span> seconds...</p>
-        <a asp-page="/Portal" class="btn btn-primary btn-lg">Redirect me now! :P</a>
+        <p class="lead">Redirecting you to Stanner in <span id="countdown">5</span> seconds...</p>
+        <a asp-page="/Portal" class="btn btn-primary btn-lg">Click here to be redirected now.</a>
     </div>
 </div>
 
 @section Scripts {
     <script>
         // countdown for redirecting to the portal page
-        let seconds = 3;
+        let seconds = 5;
         const countdownElement = document.getElementById('countdown');
         
         const countdownInterval = setInterval(function() {
