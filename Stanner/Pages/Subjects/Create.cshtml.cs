@@ -28,21 +28,21 @@ public class CreateModel : PageModel
     {
         try
         {
-            // Check if Name is provided (required field)
+            // name must be provided so required
             if (string.IsNullOrWhiteSpace(Subject?.Name))
             {
                 ErrorMessage = "Subject name is required.";
                 return Page();
             }
 
-            // Set user ID
+            // setting a user id
             Subject.UserId = "temp-user-1";
             
-            // Add to database
+            // adding to database
             _context.Subjects.Add(Subject);
             await _context.SaveChangesAsync();
 
-            // Redirect to Portal
+            // redirecting go the portal
             return RedirectToPage("/Portal");
         }
         catch (Exception ex)
