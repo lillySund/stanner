@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Stanner.Data;
 using Stanner.Models;
 
+
+// second creat,cshtml ??? fix? or dont fix if it works
 namespace Stanner.Pages.Subjects;
 
 public class CreateModel : PageModel

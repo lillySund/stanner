@@ -1,0 +1,156 @@
+@page
+@model Stanner.Pages.Flashcards.StudyModel
+@{
+    ViewData["Title"] = "Study Flashcards";
+}
+
+<div class="container study-container">
+    <form method="post">
+        @Html.AntiForgeryToken()
+    </form>
+    <div class="text-center mb-4">
+        <h1>Study Session</h1>
+        @if (Model.Subject != null)
+        {
+            <p class="text-muted">Subject: @Model.Subject.Name</p>
+        }
+        <div class="progress-info">
+            <span id="currentCard">1</span> / <span id="totalCards">@Model.Flashcards.Count</span> cards
+            <span class="ms-3">XP Earned: <strong id="xpEarned">0</strong></span>
+        </div>
+    </div>
+
+    <div class="flashcard-container">
+        <div class="flashcard">
+            <div id="questionSide" class="card-side">
+                <h3>Question:</h3>
+                <p id="question" class="card-text"></p>
+                <button class="btn btn-primary mt-3" onclick="showAnswer()">Show Answer</button>
+            </div>
+            <div id="answerSide" class="card-side" style="display: none;">
+                <h3>Answer:</h3>
+                <p id="answer" class="card-text"></p>
+                <button class="btn btn-success mt-3" onclick="nextCard()">
+                    <i class="bi bi-check-circle"></i> GYay, you got it good job! (+10 XP)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a asp-page="/Portal" class="btn btn-secondary">End this study session</a>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .study-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .progress-info {
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .flashcard-container {
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flashcard {
+            width: 100%;
+            max-width: 600px;
+            min-height: 400px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            padding: 3rem;
+        }
+
+        .card-side {
+            text-align: center;
+        }
+
+        .card-side h3 {
+            margin-bottom: 2rem;
+            color: #667eea;
+        }
+
+        .card-text {
+            font-size: 1.5rem;
+            margin: 2rem 0;
+            min-height: 100px;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        const flashcards = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Flashcards.Select(f => new { f.Id, f.Question, f.Answer })));
+        let currentIndex = 0;
+        let totalXP = 0;
+
+        function loadCard(index) {
+            if (index >= flashcards.length) {
+                showCompletion();
+                return;
+            }
+
+            const card = flashcards[index];
+            document.getElementById('question').textContent = card.question;
+            document.getElementById('answer').textContent = card.answer;
+            document.getElementById('currentCard').textContent = index + 1;
+            
+            // show questions but hiding the answer
+            document.getElementById('questionSide').style.display = 'block';
+            document.getElementById('answerSide').style.display = 'none';
+        }
+
+        function showAnswer() {
+            document.getElementById('questionSide').style.display = 'none';
+            document.getElementById('answerSide').style.display = 'block';
+        }
+
+        async function nextCard() {
+            const flashcardId = flashcards[currentIndex].Id;
+
+            try {
+                const response = await fetch(`/Flashcards/Study?handler=CompleteStudy&flashcardId=${flashcardId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    }
+                });
+
+                totalXP += 10;
+                document.getElementById('xpEarned').textContent = totalXP;
+
+                currentIndex++;
+                loadCard(currentIndex);
+            } catch (error) {
+                console.error('Error:', error);
+                currentIndex++;
+                loadCard(currentIndex);
+            }
+        }
+
+        function showCompletion() {
+            document.querySelector('.flashcard-container').innerHTML = `
+                <div class="text-center">
+                    <i class="bi bi-trophy" style="font-size: 5rem; color: gold;"></i>
+                    <h2 class="mt-3">Study Session Complete!</h2>
+                    <p class="lead">You earned <strong>${totalXP} XP</strong>!</p>
+                    <a href="/Portal" class="btn btn-primary btn-lg mt-3">Back to Portal</a>
+                </div>
+            `;
+        }
+
+        loadCard(0);
+    </script>
+}

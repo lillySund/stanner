@@ -1,0 +1,89 @@
+@page
+@model Stanner.Pages.Flashcards.CreateModel
+@{
+    ViewData["Title"] = "Create a Flashcard";
+}
+
+<div class="container create-flashcard-container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="mb-4">
+                <i class="bi bi-card-text"></i> Create Flashcards yay
+            </h1>
+            
+            @if (Model.Subject != null)
+            {
+                <p class="text-muted">Subject: <strong>@Model.Subject.Name</strong></p>
+            }
+
+            <div class="card shadow">
+                <div class="card-body">
+                    <form method="post">
+                        <input type="hidden" asp-for="Flashcard.SubjectId" />
+                        
+                        <div class="mb-4">
+                            <label asp-for="Flashcard.Question" class="form-label">
+                                <i class="bi bi-question-circle"></i> Question
+                            </label>
+                            <textarea asp-for="Flashcard.Question" class="form-control" rows="4" 
+                                      placeholder="Enter the question here..." required></textarea>
+                            <span asp-validation-for="Flashcard.Question" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Flashcard.Answer" class="form-label">
+                                <i class="bi bi-check-circle"></i> Answer
+                            </label>
+                            <textarea asp-for="Flashcard.Answer" class="form-control" rows="4" 
+                                      placeholder="Enter the answer here..." required></textarea>
+                            <span asp-validation-for="Flashcard.Answer" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Create Flashcard
+                            </button>
+                            <a asp-page="./Index" asp-route-subjectId="@Model.Flashcard.SubjectId" 
+                               class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to Lists
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .create-flashcard-container {
+            padding: 2rem 0;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+        }
+
+        textarea.form-control {
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            transition: border-color 0.3s;
+        }
+
+        textarea.form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+    </style>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
