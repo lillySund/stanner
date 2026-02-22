@@ -16,6 +16,8 @@ public class CreateModel : PageModel
 
     [BindProperty]
     public Subject Subject { get; set; } = default!;
+    
+    public string ErrorMessage { get; set; } = string.Empty;
 
     public IActionResult OnGet()
     {
@@ -24,17 +26,29 @@ public class CreateModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        if (!ModelState.IsValid)
+        try
         {
+            // Check if Name is provided (required field)
+            if (string.IsNullOrWhiteSpace(Subject?.Name))
+            {
+                ErrorMessage = "Subject name is required.";
+                return Page();
+            }
+
+            // Set user ID
+            Subject.UserId = "temp-user-1";
+            
+            // Add to database
+            _context.Subjects.Add(Subject);
+            await _context.SaveChangesAsync();
+
+            // Redirect to Portal
+            return RedirectToPage("/Portal");
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Error creating subject: {ex.Message}";
             return Page();
         }
-
-        // TODO: Replace with actual user authentication
-        Subject.UserId = "temp-user-1";
-        
-        _context.Subjects.Add(Subject);
-        await _context.SaveChangesAsync();
-
-        return RedirectToPage("/Portal");
     }
 }

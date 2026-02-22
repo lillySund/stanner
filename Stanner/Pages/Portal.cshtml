@@ -5,7 +5,7 @@
 }
 
 <div class="portal-container">
-    <!-- Header Section -->
+    <!-- header section and decals  -->
     <div class="portal-header">
         <h1>Welcome back, @Model.UserProfile?.DisplayName!</h1>
         <div class="user-stats">
@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <!-- Quick Actions -->
+    <!-- ac tions for subjects and other things -->
     <div class="quick-actions">
         <h2>Quick Actions</h2>
         <div class="action-buttons">
@@ -48,7 +48,7 @@
         </div>
     </div>
 
-    <!-- Subjects Grid -->
+    <!-- subject grid -->
     <div class="subjects-section">
         <div class="section-header">
             <h2>Your Subjects</h2>
@@ -124,7 +124,7 @@
         }
     </div>
 
-    <!-- Study Progress Today -->
+    <!-- study progress 24hr might update to 1 week -->
     <div class="daily-progress">
         <h2>Today's Progress</h2>
         <div class="progress-card">
@@ -137,6 +137,7 @@
     </div>
 </div>
 
+<!-- css for stylinh with icons for progress at the top of the -->
 @section Styles {
     <style>
         .portal-container {
@@ -162,29 +163,32 @@
         }
         
         .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: white;
+            color: #333;
             padding: 1.5rem;
             border-radius: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
         }
         
         .stat-card i {
             font-size: 2rem;
             margin-bottom: 0.5rem;
+            color: #667eea;
         }
         
         .stat-label {
             font-size: 0.9rem;
-            opacity: 0.9;
+            color: #666;
         }
         
         .stat-value {
             font-size: 1.8rem;
             font-weight: bold;
+            color: #333;
         }
         
         .quick-actions {

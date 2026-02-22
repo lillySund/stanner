@@ -10,39 +10,42 @@
             <h1>Create New Subject</h1>
             <hr />
             
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="alert alert-danger">
+                    @Model.ErrorMessage
+                </div>
+            }
+            
             <form method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 
                 <div class="mb-3">
-                    <label asp-for="Subject.Name" class="form-label">Subject Name</label>
-                    <input asp-for="Subject.Name" class="form-control" placeholder="e.g., Mathematics, Biology, History" />
+                    <label asp-for="Subject.Name" class="form-label">Subject Name *</label>
+                    <input asp-for="Subject.Name" class="form-control" placeholder="e.g., Mathematics, Biology, History" required />
                     <span asp-validation-for="Subject.Name" class="text-danger"></span>
                 </div>
                 
                 <div class="mb-3">
                     <label asp-for="Subject.Description" class="form-label">Description (Optional)</label>
                     <textarea asp-for="Subject.Description" class="form-control" rows="3" placeholder="Brief description of the subject"></textarea>
-                    <span asp-validation-for="Subject.Description" class="text-danger"></span>
                 </div>
                 
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label asp-for="Subject.CurrentGrade" class="form-label">Current Grade (Optional)</label>
                         <input asp-for="Subject.CurrentGrade" class="form-control" placeholder="e.g., B, 75%, 3.0 GPA" />
-                        <span asp-validation-for="Subject.CurrentGrade" class="text-danger"></span>
                     </div>
                     
                     <div class="col-md-6 mb-3">
                         <label asp-for="Subject.TargetGrade" class="form-label">Target Grade (Optional)</label>
                         <input asp-for="Subject.TargetGrade" class="form-control" placeholder="e.g., A, 90%, 4.0 GPA" />
-                        <span asp-validation-for="Subject.TargetGrade" class="text-danger"></span>
                     </div>
                 </div>
                 
                 <div class="mb-3">
                     <label asp-for="Subject.Color" class="form-label">Color Theme</label>
                     <input asp-for="Subject.Color" type="color" class="form-control form-control-color" value="#667eea" />
-                    <span asp-validation-for="Subject.Color" class="text-danger"></span>
                 </div>
                 
                 <div class="mb-3">
